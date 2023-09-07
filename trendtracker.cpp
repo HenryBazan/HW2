@@ -58,10 +58,22 @@ string Trendtracker::top_trend() {
 
 void Trendtracker::top_three_trends(vector<string> &T) {
     T.clear();
+    vector<pair<int, string>> sortedHashtags; // Pair of (popularity, hashtag)
+
     for (int i : S) {
-        T.push_back(E[i].hashtag);
+        sortedHashtags.push_back({E[i].pop, E[i].hashtag});
+    }
+
+    // Sort the hashtags by popularity (descending order)
+    sort(sortedHashtags.rbegin(), sortedHashtags.rend());
+
+    // Only add the top three most-tweeted hashtags to the result
+    for (int i = 0; i < min(3, static_cast<int>(sortedHashtags.size())); ++i) {
+        T.push_back(sortedHashtags[i].second);
     }
 }
+
+
 
 int Trendtracker::search(string ht) {
     // Binary search for the hashtag in the sorted vector E
